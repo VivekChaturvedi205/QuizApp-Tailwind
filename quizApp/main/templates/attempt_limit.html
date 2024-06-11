@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %} {{category.title}} Question {% endblock %}
+{% block content %}
+<h3 class="my-4">Category: <span class="text-primary">{{category.title}}</span></h3>
+<div class="card my-4 border-dark shadow">
+    <h4>You can participate in same category after 24 hours of your previous attempt</h4>
+</div>
+{% endblock %}

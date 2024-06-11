@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %} {{category.title}} Question {% endblock %}
+{% block content %}
+<h3 class="my-4">Category: <span class="text-primary">{{category.title}}</span></h3>
+<div class="card my-4">
+    <h4 class="card-header">{{catQuest.question}} <span class="timer float-end">asss</span></h4>
+    <form method="POST" action="{% url 'submit_answer' category.id catQuest.id %}">
+        {% csrf_token %}
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <td> <input type="radio"  value="{{catQuest.opt_1}}" id="option_1" name="answer"></td>
+                <th> <label for="option_1">{{catQuest.opt_1}}</label></th>
+            </tr>
+            <tr>
+                <td> <input type="radio"  value="{{catQuest.opt_2}}" id="option_2" name="answer"></td>
+                <th> <label for="option_2">{{catQuest.opt_2}}</label></th>
+            </tr>
+            <tr>
+                <td> <input type="radio"  value="{{catQuest.opt_3}}" id="option_3" name="answer"></td>
+                <th> <label for="option_3">{{catQuest.opt_3}}</label></th>
+            </tr>
+            <tr>
+                <td> <input type="radio"  value="{{catQuest.opt_4}}" id="option_4" name="answer"></td>
+                <th> <label for="option_4">{{catQuest.opt_4}}</label></th>
+            </tr>
+        </table>
+    </div>
+    <div class="card-footer">
+        <input type="submit" value="Skip"  name="skip" class="btn btn-warning skipbtn">
+        <input type="submit" value="Submit" name="submit" class="btn btn-primary submitBtn">
+    </div>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".submitBtn").on('click', function(){
+            var _checkedAns = $("input[name=answer]:checked").val();
+            if (_checkedAns == undefined){
+                alert("Please select option!!");
+                return false;
+            }
+        });
+        var countdownTime = "{{catQuest.time_limit}}"; 
+        var targetTime = new Date().getTime() + countdownTime * 1000;
+        $('.timer').countdown(targetTime, function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        }).on('finish.countdown', function() {
+            $('.skipbtn').click();
+        });
+    });
+</script>
+{% endblock %}
